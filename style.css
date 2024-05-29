@@ -26,8 +26,10 @@ body {
     border-radius: 10px;
     cursor: pointer;
     position: relative;
-    background-image: url('images/back.png');
-    background-size: cover;
+    background-image: url('images/back.jpg');
+    background-size: contain; /* 変更: containに設定 */
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .card img {
