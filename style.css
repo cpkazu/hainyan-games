@@ -26,6 +26,8 @@ body {
     border-radius: 10px;
     cursor: pointer;
     position: relative;
+    background-image: url('images/back.jpg');
+    background-size: cover;
 }
 
 .card img {
@@ -33,6 +35,10 @@ body {
     height: 100%;
     border-radius: 10px;
     display: none;
+}
+
+.card.flipped {
+    background-image: none;
 }
 
 .card.flipped img {
