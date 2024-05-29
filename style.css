@@ -14,8 +14,8 @@ body {
 
 #game-board {
     display: grid;
-    grid-template-columns: repeat(4, 100px);
     gap: 10px;
+    justify-content: center;
 }
 
 .card {
@@ -42,4 +42,22 @@ body {
 #message {
     margin-top: 20px;
     font-size: 1.2em;
+}
+
+/* PC用の設定 */
+@media (min-width: 768px) {
+    #game-board {
+        grid-template-columns: repeat(8, 100px);
+    }
+}
+
+/* モバイル用の設定 */
+@media (max-width: 767px) {
+    #game-board {
+        grid-template-columns: repeat(4, 100px);
+    }
+    .card {
+        width: 80px;
+        height: 120px;
+    }
 }
