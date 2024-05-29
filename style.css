@@ -54,7 +54,8 @@ body {
 /* モバイル用の設定 */
 @media (max-width: 767px) {
     #game-board {
-        grid-template-columns: repeat(4, 100px);
+        grid-template-columns: repeat(4, 80px);
+        gap: 5px;
     }
     .card {
         width: 80px;
