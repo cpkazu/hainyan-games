@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cardImages = [
-        'spade_a.png', 'spade_k.png', 'spade_q.png', 'spade_j.png', 'spade_01.png', 'spade_02.png', 'spade_03.png', 'spade_04,jpg', 'spade_05,jpg', 'spade_06,jpg', 'spade_07,jpg', 'spade_08,jpg', 'spade_09,jpg', 'spade_10,jpg', 
-        'heart_a.png', 'heart_k.png', 'heart_q.png', 'heart_j.png', 'heart_01.png', 'heart_02.png', 'heart_03.png', 'heart_04.png', 'heart_05.png', 'heart_06.png', 'heart_07.png', 'heart_08.png', 'heart_09.png', 'heart_10.png', 
-        'diamond_a.png', 'diamond_k.png', 'diamond_q.png', 'diamond_j.png', 'diamond_01.png', 'diamond_02.png', 'diamond_03.png', 'diamond_04.png', 'diamond_05.png', 'diamond_06.png', 'diamond_07.png', 'diamond_08.png', 'diamond_09.png', 'diamond_10.png', 
-        'club_a.png', 'club_k.png', 'club_q.png', 'club_j.png', 'club_01.png', 'club_02.png', 'club_03.png', 'club_04.png', 'club_05.png', 'club_06.png', 'club_07.png', 'club_08.png', 'club_09.png', 'club_10.png'
+        'spade_a.png', 'spade_k.png', 'spade_q.png', 'spade_j.png', 'spade_02.png', 'spade_03.png', 'spade_04,jpg', 'spade_05,jpg', 'spade_06,jpg', 'spade_07,jpg', 'spade_08,jpg', 'spade_09,jpg', 'spade_10,jpg', 
+        'heart_a.png', 'heart_k.png', 'heart_q.png', 'heart_j.png', 'heart_02.png', 'heart_03.png', 'heart_04.png', 'heart_05.png', 'heart_06.png', 'heart_07.png', 'heart_08.png', 'heart_09.png', 'heart_10.png', 
+        'diamond_a.png', 'diamond_k.png', 'diamond_q.png', 'diamond_j.png', 'diamond_02.png', 'diamond_03.png', 'diamond_04.png', 'diamond_05.png', 'diamond_06.png', 'diamond_07.png', 'diamond_08.png', 'diamond_09.png', 'diamond_10.png', 
+        'club_a.png', 'club_k.png', 'club_q.png', 'club_j.png', 'club_02.png', 'club_03.png', 'club_04.png', 'club_05.png', 'club_06.png', 'club_07.png', 'club_08.png', 'club_09.png', 'club_10.png', 
+        'joker_01.png', 'joker_02.png'
     ];
 
     const difficultySettings = {
