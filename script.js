@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const difficultySettings = {
-        easy: { pairs: 10, message: '20枚で行います。めくったカードの絵柄が合っていればペア判定です。' },  // 10ペア (20枚)
-        medium: { pairs: 17, message: '34枚で行います。めくったカードのキャストが同じ場合はペア判定です。' }, // 17ペア (34枚)
-        hard: { pairs: 26, message: '52枚で行います。めくったカードのキャストが同じ場合はペア判定です。' }   // 26ペア (52枚)
+        easy: { pairs: 8, message: '16枚で行います。めくったカードの絵柄が合っていればペア判定です。' },  // 8ペア (16枚)
+        medium: { pairs: 13, message: '26枚で行います。めくったカードのキャストが同じ場合はペア判定です。' }, // 13ペア (26枚)
+        hard: { pairs: 18, message: '36枚で行います。めくったカードのキャストが同じ場合はペア判定です。' }   // 18ペア (36枚)
     };
 
     const gameBoard = document.getElementById('game-board');
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const difficulty = difficultySelect.value;
         const { pairs, message } = difficultySettings[difficulty];
         alert(message); // 難易度選択時のメッセージ表示
-        const selectedCards = difficulty === 'easy' ? shuffle(cardImages).slice(0, pairs) : selectUniqueCards(pairs);
+        const selectedCards = selectUniqueCards(pairs, difficulty);
         const shuffledCards = shuffle([...selectedCards, ...selectedCards]);
         gameBoard.innerHTML = '';
         messageDiv.textContent = '';
@@ -140,18 +140,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return array;
     }
 
-    function selectUniqueCards(numPairs) {
+    function selectUniqueCards(numPairs, difficulty) {
         const uniqueCards = [];
         const cardNumbers = Array.from({ length: 10 }, (_, i) => (i + 2).toString().padStart(2, '0')).concat(['a', 'k', 'q', 'j']);
         shuffle(cardNumbers);
+        let selectedCards = [];
         for (let i = 0; i < numPairs; i++) {
             const cardNumber = cardNumbers[i];
-            uniqueCards.push(`spade_${cardNumber}.png`);
-            uniqueCards.push(`heart_${cardNumber}.png`);
-            uniqueCards.push(`diamond_${cardNumber}.png`);
-            uniqueCards.push(`club_${cardNumber}.png`);
+            selectedCards.push(`spade_${cardNumber}.png`);
+            selectedCards.push(`heart_${cardNumber}.png`);
+            selectedCards.push(`diamond_${cardNumber}.png`);
+            selectedCards.push(`club_${cardNumber}.png`);
         }
-        return uniqueCards.slice(0, numPairs);
+        if (difficulty !== 'easy') {
+            uniqueCards.push(...selectedCards.slice(0, numPairs));
+        }
+        return uniqueCards.length > 0 ? uniqueCards : shuffle(selectedCards).slice(0, numPairs);
     }
 
     function getCardNumber(card) {
