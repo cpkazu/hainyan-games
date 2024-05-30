@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedCards = selectUniqueCards(pairs, difficulty);
         const shuffledCards = shuffle([...selectedCards, ...selectedCards]);
         gameBoard.innerHTML = '';
+        gameBoard.className = ''; // 既存のクラスをクリア
+        gameBoard.classList.add(difficulty); // 難易度に応じたクラスを追加
         messageDiv.textContent = '';
         flippedCards = [];
         matchedPairs = 0;
