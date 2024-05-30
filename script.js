@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card2.classList.remove('flipped');
                 flippedCards = [];
                 nextTurn();
-            }, 1000);
+            }, 2000); // 2秒に変更
         }
     }
 
