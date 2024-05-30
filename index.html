@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -7,17 +7,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="controls">
-        <label for="difficulty">難易度:</label>
-        <select id="difficulty">
-            <option value="easy">初級</option>
-            <option value="medium">中級</option>
-            <option value="hard">上級</option>
-        </select>
-        <button id="start-game">ゲーム開始</button>
+    <div id="container">
+        <h1>はいにゃん神経衰弱</h1>
+        <div id="controls">
+            <label for="difficulty">難易度:</label>
+            <select id="difficulty">
+                <option value="easy">初級</option>
+                <option value="medium">中級</option>
+                <option value="hard">上級</option>
+            </select>
+            <button id="start-game">ゲーム開始</button>
+        </div>
+        <div id="game-board"></div>
+        <div id="message"></div>
     </div>
-    <div id="game-board"></div>
-    <div id="message"></div>
     <script src="https://cdn.rawgit.com/phi-jp/phina.js/v0.2.3/build/phina.min.js"></script>
     <script src="script.js"></script>
 </body>
