@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shuffledCards.forEach(image => {
             const card = document.createElement('div');
             card.classList.add('card');
+            card.classList.add(difficulty); // 難易度に応じたクラスを追加
             card.dataset.image = image;
 
             const cardImage = document.createElement('img');
