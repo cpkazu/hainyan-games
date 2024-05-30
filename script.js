@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const difficultySettings = {
-        easy: 10,  // 10ペア (20枚)
-        medium: 17, // 17ペア (34枚)
-        hard: 26   // 26ペア (52枚)
+        easy: { pairs: 10, message: '20枚で行います。めくったカードの絵柄が合っていればペア判定です。' },  // 10ペア (20枚)
+        medium: { pairs: 17, message: '34枚で行います。めくったカードのキャストが同じ場合はペア判定です。' }, // 17ペア (34枚)
+        hard: { pairs: 26, message: '52枚で行います。めくったカードのキャストが同じ場合はペア判定です。' }   // 26ペア (52枚)
     };
 
     const gameBoard = document.getElementById('game-board');
@@ -28,8 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startGame() {
         const difficulty = difficultySelect.value;
-        const numPairs = difficultySettings[difficulty];
-        const selectedCards = shuffle(cardImages).slice(0, numPairs);
+        const { pairs, message } = difficultySettings[difficulty];
+        alert(message); // 難易度選択時のメッセージ表示
+        const selectedCards = difficulty === 'easy' ? shuffle(cardImages).slice(0, pairs) : selectUniqueCards(pairs);
         const shuffledCards = shuffle([...selectedCards, ...selectedCards]);
         gameBoard.innerHTML = '';
         messageDiv.textContent = '';
@@ -73,7 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkForMatch() {
         const [card1, card2] = flippedCards;
-        if (card1.dataset.image === card2.dataset.image) {
+        const difficulty = difficultySelect.value;
+
+        let isMatch;
+        if (difficulty === 'easy') {
+            isMatch = card1.dataset.image === card2.dataset.image;
+        } else {
+            isMatch = getCardNumber(card1.dataset.image) === getCardNumber(card2.dataset.image);
+        }
+
+        if (isMatch) {
             matchedPairs++;
             flippedCards = [];
             if (currentPlayer === 'player') {
@@ -82,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 cpuScore++;
             }
             updateScore();
-            if (matchedPairs === cardImages.length / 2) {
+            if (matchedPairs === difficultySettings[difficulty].pairs) {
                 setTimeout(() => alert(`ゲーム終了！ プレイヤー: ${playerScore} - CPU: ${cpuScore}`), 100);
             } else {
                 nextTurn();
@@ -93,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card2.classList.remove('flipped');
                 flippedCards = [];
                 nextTurn();
-            }, 2000); // 2秒に変更
+            }, 2000); // 2秒
         }
     }
 
@@ -128,5 +138,24 @@ document.addEventListener('DOMContentLoaded', () => {
             [array[i], array[j]] = [array[j], array[i]];
         }
         return array;
+    }
+
+    function selectUniqueCards(numPairs) {
+        const uniqueCards = [];
+        const cardNumbers = Array.from({ length: 10 }, (_, i) => (i + 2).toString().padStart(2, '0')).concat(['a', 'k', 'q', 'j']);
+        shuffle(cardNumbers);
+        for (let i = 0; i < numPairs; i++) {
+            const cardNumber = cardNumbers[i];
+            uniqueCards.push(`spade_${cardNumber}.png`);
+            uniqueCards.push(`heart_${cardNumber}.png`);
+            uniqueCards.push(`diamond_${cardNumber}.png`);
+            uniqueCards.push(`club_${cardNumber}.png`);
+        }
+        return uniqueCards.slice(0, numPairs);
+    }
+
+    function getCardNumber(card) {
+        const parts = card.split('_');
+        return parts[1].split('.')[0];
     }
 });
