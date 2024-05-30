@@ -26,8 +26,7 @@ body {
     border-radius: 10px;
     cursor: pointer;
     position: relative;
-    background-image: url('images/back.png');
-    background-size: contain; /* 変更: containに設定 */
+    background-size: contain; 
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -68,5 +67,19 @@ body {
     .card {
         width: 80px;
         height: 120px;
+    }
+}
+
+/* 中級用の設定 */
+@media (max-width: 767px) and (min-width: 576px) {
+    #game-board.medium {
+        grid-template-columns: repeat(5, 80px);
+    }
+}
+
+/* 上級用の設定 */
+@media (max-width: 767px) and (min-width: 576px) {
+    #game-board.hard {
+        grid-template-columns: repeat(6, 80px);
     }
 }
