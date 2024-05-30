@@ -26,6 +26,7 @@ body {
     border-radius: 10px;
     cursor: pointer;
     position: relative;
+    background-image: url('images/back.png'); /* 追加 */
     background-size: contain; 
     background-repeat: no-repeat;
     background-position: center;
@@ -39,7 +40,7 @@ body {
 }
 
 .card.flipped {
-    background-image: none;
+    background-image: none; /* 追加 */
 }
 
 .card.flipped img {
@@ -71,14 +72,14 @@ body {
 }
 
 /* 中級用の設定 */
-@media (max-width: 767px) and (min-width: 576px) {
+@media (max-width: 767px) {
     #game-board.medium {
         grid-template-columns: repeat(5, 80px);
     }
 }
 
 /* 上級用の設定 */
-@media (max-width: 767px) and (min-width: 576px) {
+@media (max-width: 767px) {
     #game-board.hard {
         grid-template-columns: repeat(6, 80px);
     }
