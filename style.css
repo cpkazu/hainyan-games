@@ -78,9 +78,38 @@ select:hover, button:hover {
     display: block;
 }
 
+@keyframes glow {
+    0% { box-shadow: 0 0 5px #fff; }
+    50% { box-shadow: 0 0 20px #ff66b2; }
+    100% { box-shadow: 0 0 5px #fff; }
+}
+
+.card.match {
+    animation: glow 1s infinite;
+}
+
 #message {
     margin-top: 20px;
     font-size: 1.2em;
+}
+
+@keyframes confetti {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(100vh); }
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: #ff66b2;
+    top: 0;
+    left: 50%;
+    animation: confetti 2s linear infinite;
+}
+
+.confetti:nth-child(odd) {
+    background-color: #ffccff;
 }
 
 /* PC用の設定 */
