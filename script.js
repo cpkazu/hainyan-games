@@ -1,43 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cardImages = [
-        // トランプの画像リスト
         'spade_a.png', 'spade_k.png', 'spade_q.png', 'spade_j.png', 'spade_02.png', 'spade_03.png', 'spade_04.png', 'spade_05.png', 'spade_06.png', 'spade_07.png', 'spade_08.png', 'spade_09.png', 'spade_10.png', 
         'heart_a.png', 'heart_k.png', 'heart_q.png', 'heart_j.png', 'heart_02.png', 'heart_03.png', 'heart_04.png', 'heart_05.png', 'heart_06.png', 'heart_07.png', 'heart_08.png', 'heart_09.png', 'heart_10.png', 
         'diamond_a.png', 'diamond_k.png', 'diamond_q.png', 'diamond_j.png', 'diamond_02.png', 'diamond_03.png', 'diamond_04.png', 'diamond_05.png', 'diamond_06.png', 'diamond_07.png', 'diamond_08.png', 'diamond_09.png', 'diamond_10.png', 
-        'club_a.png', 'club_k.png', 'club_q.png', 'club_j.png', 'club_02.png', 'club_03.png', 'club_04.png', 'club_05.png', 'club_06.png', 'club_07.png', 'club_08.png', 'club_09.png', 'club_10.png', 
-        'joker_01.png', 'joker_02.png'
+        'club_a.png', 'club_k.png', 'club_q.png', 'club_j.png', 'club_02.png', 'club_03.png', 'club_04.png', 'club_05.png', 'club_06.png', 'club_07.png', 'club_08.png', 'club_09.png', 'club_10.png'
     ];
 
-    // 難易度設定
     const difficultySettings = {
-        easy: { pairs: 8, message: '16枚で行います。めくったカードの絵柄が合っていればペア判定です。' },  // 8ペア (16枚)
-        medium: { pairs: 13, message: '26枚で行います。めくったカードのキャストが同じ場合はペア判定です。' }, // 13ペア (26枚)
-        hard: { pairs: 18, message: '36枚で行います。めくったカードのキャストが同じ場合はペア判定です。' }   // 18ペア (36枚)
+        easy: { pairs: 8, message: '16枚で行います。めくったカードのキャスト（数字）が同じ場合はペア判定です。' },  // 8ペア (16枚)
+        medium: { pairs: 13, message: '26枚で行います。めくったカードのキャスト（数字）が同じ場合はペア判定です。' }, // 13ペア (26枚)
+        hard: { pairs: 18, message: '36枚で行います。めくったカードのキャスト（数字）が同じ場合はペア判定です。' }   // 18ペア (36枚)
     };
 
-    // HTML要素の取得
     const gameBoard = document.getElementById('game-board');
     const startButton = document.getElementById('start-game');
     const difficultySelect = document.getElementById('difficulty');
     const messageDiv = document.getElementById('message');
+    const difficultyMessageDiv = document.getElementById('difficulty-message');
 
-    // ゲームの状態を保持する変数
     let flippedCards = [];
     let matchedPairs = 0;
     let currentPlayer = 'player'; // 'player' or 'cpu'
     let playerScore = 0;
     let cpuScore = 0;
 
-    // ゲーム開始ボタンのクリックイベント
+    difficultySelect.addEventListener('change', updateDifficultyMessage);
     startButton.addEventListener('click', startGame);
 
+    function updateDifficultyMessage() {
+        const difficulty = difficultySelect.value;
+        const { message } = difficultySettings[difficulty];
+        difficultyMessageDiv.textContent = message;
+    }
+
     function startGame() {
-        // 選択された難易度の取得
         const difficulty = difficultySelect.value;
         const { pairs, message } = difficultySettings[difficulty];
-        alert(message); // 難易度選択時のメッセージ表示
-        const selectedCards = selectUniqueCards(pairs, difficulty);
-        const shuffledCards = shuffle([...selectedCards, ...selectedCards]);
+        const selectedCards = selectUniqueCards(pairs);
+        const shuffledCards = shuffle(selectedCards);
         gameBoard.innerHTML = '';
         gameBoard.className = ''; // 既存のクラスをクリア
         gameBoard.classList.add(difficulty); // 難易度に応じたクラスを追加
@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cpuScore = 0;
         currentPlayer = 'player';
 
-        // シャッフルされたカードをゲームボードに追加
         shuffledCards.forEach(image => {
             const card = document.createElement('div');
             card.classList.add('card');
@@ -69,31 +68,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (currentPlayer === 'cpu') {
-            cpuTurn();
+            setTimeout(cpuTurn, 1000);
         }
     }
 
-    // カードをめくる処理
     function flipCard(card) {
-        card.classList.add('flipped');
-        flippedCards.push(card);
+        if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
+            card.classList.add('flipped');
+            flippedCards.push(card);
+        }
 
         if (flippedCards.length === 2) {
             checkForMatch();
         }
     }
 
-    // 2枚のカードが一致するかどうかをチェック
     function checkForMatch() {
         const [card1, card2] = flippedCards;
-        const difficulty = difficultySelect.value;
-
-        let isMatch;
-        if (difficulty === 'easy') {
-            isMatch = card1.dataset.image === card2.dataset.image;
-        } else {
-            isMatch = getCardNumber(card1.dataset.image) === getCardNumber(card2.dataset.image);
-        }
+        const isMatch = getCardNumber(card1.dataset.image) === getCardNumber(card2.dataset.image);
 
         if (isMatch) {
             matchedPairs++;
@@ -109,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 card1.classList.remove('match');
                 card2.classList.remove('match');
-                if (matchedPairs === difficultySettings[difficulty].pairs) {
+                if (matchedPairs === difficultySettings[difficultySelect.value].pairs) {
                     displayEndMessage();
                 } else {
                     nextTurn();
@@ -121,11 +113,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 card2.classList.remove('flipped');
                 flippedCards = [];
                 nextTurn();
-            }, 2000); // 待機2秒
+            }, 2000); // 2秒
         }
     }
 
-    // 次のプレイヤーにターンを渡す
     function nextTurn() {
         currentPlayer = currentPlayer === 'player' ? 'cpu' : 'player';
         if (currentPlayer === 'cpu') {
@@ -133,27 +124,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // CPUのターンの処理
     function cpuTurn() {
         const unflippedCards = Array.from(document.querySelectorAll('.card:not(.flipped)'));
-        const randomIndex1 = Math.floor(Math.random() * unflippedCards.length);
-        const card1 = unflippedCards[randomIndex1];
-        flipCard(card1);
+        if (unflippedCards.length > 1) {
+            const randomIndex1 = Math.floor(Math.random() * unflippedCards.length);
+            const card1 = unflippedCards[randomIndex1];
+            flipCard(card1);
 
-        setTimeout(() => {
-            const unflippedCardsAfterFirstFlip = Array.from(document.querySelectorAll('.card:not(.flipped)'));
-            const randomIndex2 = Math.floor(Math.random() * unflippedCardsAfterFirstFlip.length);
-            const card2 = unflippedCardsAfterFirstFlip[randomIndex2];
-            flipCard(card2);
-        }, 500);
+            setTimeout(() => {
+                const unflippedCardsAfterFirstFlip = Array.from(document.querySelectorAll('.card:not(.flipped)'));
+                if (unflippedCardsAfterFirstFlip.length > 1) {
+                    const randomIndex2 = Math.floor(Math.random() * unflippedCardsAfterFirstFlip.length);
+                    const card2 = unflippedCardsAfterFirstFlip[randomIndex2];
+                    flipCard(card2);
+                } else {
+                    nextTurn(); // カードが1枚以下の場合は次のターンに進む
+                }
+            }, 1000);
+        }
     }
 
-    // スコアを更新
     function updateScore() {
         messageDiv.textContent = `プレイヤー: ${playerScore} - CPU: ${cpuScore}`;
     }
 
-    // 配列をシャッフル
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -162,12 +156,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return array;
     }
 
-    // 難易度に応じてユニークなカードを選択
-    function selectUniqueCards(numPairs, difficulty) {
-        const uniqueCards = [];
-        const cardNumbers = Array.from({ length: 10 }, (_, i) => (i + 2).toString().padStart(2, '0')).concat(['a', 'k', 'q', 'j']);
-        shuffle(cardNumbers);
-        let selectedCards = [];
+    function selectUniqueCards(numPairs) {
+        const cardNumbers = ['a', 'k', 'q', 'j', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
+        shuffle(cardNumbers); // カード番号をシャッフル
+        const selectedCards = [];
+
         for (let i = 0; i < numPairs; i++) {
             const cardNumber = cardNumbers[i];
             selectedCards.push(`spade_${cardNumber}.png`);
@@ -175,19 +168,16 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedCards.push(`diamond_${cardNumber}.png`);
             selectedCards.push(`club_${cardNumber}.png`);
         }
-        if (difficulty !== 'easy') {
-            uniqueCards.push(...selectedCards.slice(0, numPairs));
-        }
-        return uniqueCards.length > 0 ? uniqueCards : shuffle(selectedCards).slice(0, numPairs);
+
+        // 必要なペア数のカードを選択
+        return selectedCards.slice(0, numPairs * 2);
     }
 
-    // カードの番号を取得
     function getCardNumber(card) {
         const parts = card.split('_');
         return parts[1].split('.')[0];
     }
 
-    // ゲーム終了時にメッセージを表示
     function displayEndMessage() {
         let message = '';
         if (playerScore > cpuScore) {
@@ -201,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => alert(message), 100);
     }
 
-    // 勝利時のお祝いアニメーションを表示
     function displayCelebration() {
         const confettiContainer = document.createElement('div');
         confettiContainer.id = 'confetti-container';
@@ -218,4 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.removeChild(confettiContainer);
         }, 5000); // 5秒後に消える
     }
+
+    // 初期表示のために難易度メッセージを更新
+    updateDifficultyMessage();
 });
